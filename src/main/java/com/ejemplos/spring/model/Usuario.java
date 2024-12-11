@@ -1,5 +1,6 @@
 package com.ejemplos.spring.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
@@ -18,13 +19,13 @@ public class Usuario {
 	private String nombre;
 	private String apellido;
 	private String email;
-	private Date fecha_alta;
+	private LocalDate fecha_alta;
 
 	public Usuario() {
 		super();
 	}
 
-	public Usuario(String nombre, String apellido, String email, Date fecha_alta) {
+	public Usuario(String nombre, String apellido, String email, LocalDate fecha_alta) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -32,7 +33,7 @@ public class Usuario {
 		this.fecha_alta = fecha_alta;
 	}
 
-	public Usuario(Long id_usuario, String nombre, String apellido, String email, Date fecha_alta) {
+	public Usuario(Long id_usuario, String nombre, String apellido, String email, LocalDate fecha_alta) {
 		super();
 		this.id_usuario = id_usuario;
 		this.nombre = nombre;
@@ -73,11 +74,11 @@ public class Usuario {
 		this.email = email;
 	}
 
-	public Date getFecha_alta() {
+	public LocalDate getFecha_alta() {
 		return fecha_alta;
 	}
 
-	public void setFecha_alta(Date fecha_alta) {
+	public void setFecha_alta(LocalDate fecha_alta) {
 		this.fecha_alta = fecha_alta;
 	}
 }

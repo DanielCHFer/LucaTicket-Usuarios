@@ -3,8 +3,8 @@ package com.ejemplos.spring.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ejemplos.spring.model.Evento;
-import com.ejemplos.spring.response.EventoResponse;
+import com.ejemplos.spring.model.Usuario;
+import com.ejemplos.spring.response.UsuarioResponse;
 
 public class UsuariosAdapter {
 
