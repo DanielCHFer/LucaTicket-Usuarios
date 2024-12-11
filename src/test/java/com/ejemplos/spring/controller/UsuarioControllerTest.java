@@ -27,6 +27,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @WebMvcTest(UsuarioController.class)
 public class UsuarioControllerTest {
 
+	
+	
 	@Autowired
     private MockMvc mockMvc;
 
@@ -38,7 +40,7 @@ public class UsuarioControllerTest {
     
     @Test
 	void shouldPostEventoDevuelveJson() throws Exception {
-	    
+    	
     	ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
     	
@@ -50,6 +52,24 @@ public class UsuarioControllerTest {
     	
 	    // String usuarioJson = "{\"nombre\": \"Usuario\", \"apellido\": \"Apellido\", \"email\": \"mail@ejemplo.com\", \"fecha_alta\": \"2024-12-11\"}";
 
+     // Configurar mocks
+        Usuario usuarioMock = new Usuario();
+        usuarioMock.setNombre("Juan");
+        usuarioMock.setApellido("Perez");
+        usuarioMock.setEmail("email@ejemplo.com");
+        usuarioMock.setFecha_alta(LocalDate.of(2024, 12, 15));
+        
+        Mockito.when(usuarioAdapter.of(Mockito.any(UsuarioResponse.class)))
+               .thenReturn(usuarioMock);
+        
+        Mockito.when(usuarioService.saveUsuario(Mockito.any(Usuario.class)))
+               .thenReturn(Optional.of(usuarioMock));
+        
+        Mockito.when(usuarioAdapter.of(Mockito.any(Usuario.class)))
+               .thenReturn(usuarioResponse);
+        
+        
+        
 	    mockMvc.perform(post("/usuarios")
 	            .contentType(MediaType.APPLICATION_JSON)  
 	            .content(objectMapper.writeValueAsString(usuarioResponse))) 
@@ -59,7 +79,7 @@ public class UsuarioControllerTest {
 	}
     
     @Test
-    public void testCrearUsuarioExitoso() throws Exception {
+    public void shouldTestCrearUsuarioExitoso() throws Exception {
     	
         // Crear UsuarioResponse de entrada
         UsuarioResponse usuarioRequest = new UsuarioResponse();
@@ -106,7 +126,7 @@ public class UsuarioControllerTest {
     }
     
     @Test
-    public void testUsuarioFormatoNoValido() throws Exception {
+    public void shouldTestUsuarioFormatoNoValido() throws Exception {
 
     	// Configurar ObjectMapper para manejar LocalDate
         ObjectMapper objectMapper = new ObjectMapper();
@@ -125,5 +145,55 @@ public class UsuarioControllerTest {
                 .andExpect(status().isBadRequest())  // Verifica que se devuelve un 400 Bad Request
                 .andExpect(jsonPath("$.message[0]").value("email: El email debe tener un formato válido"));  // Verifica el mensaje de error
     }
+    
+    
+    @Test
+    public void shouldRestResponseEntityMismoFormato() throws Exception {
+    	
+        // Crear UsuarioResponse de entrada
+        UsuarioResponse usuarioRequest = new UsuarioResponse();
+        usuarioRequest.setNombre("Juan");
+        usuarioRequest.setApellido("Perez");
+        usuarioRequest.setEmail("juan.perez@example.com");
+        usuarioRequest.setFecha_alta(LocalDate.of(2024, 12, 11));
+        
+        // Crear un objeto simulado devuelto por el servicio
+        UsuarioResponse usuarioResponse = new UsuarioResponse();
+        usuarioResponse.setId_usuario(1L); // Este ID se generará al persistir
+        usuarioResponse.setNombre("Juan");
+        usuarioResponse.setApellido("Perez");
+        usuarioResponse.setEmail("juan.perez@example.com");
+        usuarioResponse.setFecha_alta(LocalDate.of(2024, 12, 11));
+
+        // Simula conversión a entidad
+        Mockito.when(usuarioAdapter.of(Mockito.any(UsuarioResponse.class)))
+                .thenReturn(new Usuario()); 
+
+        // Simula guardado en base de datos
+        Mockito.when(usuarioService.saveUsuario(Mockito.any(Usuario.class)))
+                .thenReturn(Optional.of(new Usuario())); 
+
+        // Simula conversión de entidad a respuesta
+        Mockito.when(usuarioAdapter.of(Mockito.any(Usuario.class)))
+                .thenReturn(usuarioResponse); 
+
+        // Configurar ObjectMapper para manejar LocalDate
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()); // LA FECHA
+
+        String usuarioRequestJson = objectMapper.writeValueAsString(usuarioRequest); // Convertir el objeto de entrada a JSON
+        
+        mockMvc.perform(post("/usuarios")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(usuarioRequestJson))
+                .andExpect(status().isCreated()) // Verifica el código 201
+                .andExpect(jsonPath("$.id_usuario").exists())
+                .andExpect(jsonPath("$.nombre").exists())
+                .andExpect(jsonPath("$.apellido").exists())
+                .andExpect(jsonPath("$.email").exists())
+                .andExpect(jsonPath("$.fecha_alta").exists());
+    }
+    
+    
 }
 

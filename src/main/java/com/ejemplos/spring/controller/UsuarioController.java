@@ -1,5 +1,7 @@
 package com.ejemplos.spring.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,8 @@ public class UsuarioController {
 		summary = "Dar de alta un nuevo usuario",
 		description = "Permite crear un nuevo usuario en la base de datos. Ignora el Id_usuario si se especifica en el Json de entrada."
 	)
+	
+	
 	@PostMapping
     public ResponseEntity<UsuarioResponse> crearUsuario(@Valid @RequestBody UsuarioResponse usuarioResponse) {
 			
@@ -46,4 +50,8 @@ public class UsuarioController {
 	        		.status(HttpStatus.CREATED)
 	        		.body(res);
     }
+    
+	
+
+    
 }
