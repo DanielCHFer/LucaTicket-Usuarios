@@ -9,7 +9,7 @@ import com.ejemplos.spring.model.Usuario;
 import com.ejemplos.spring.repository.UsuarioRepository;
 
 @Service
-public class UsuarioServiceImpl {
+public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	UsuarioRepository usuarioRepository;
