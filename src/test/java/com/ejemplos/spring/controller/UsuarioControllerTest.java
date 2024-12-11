@@ -1,7 +1,9 @@
 package com.ejemplos.spring.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,7 +37,29 @@ public class UsuarioControllerTest {
 
     @MockBean
     private UsuariosAdapter usuarioAdapter;
+    
+    @Test
+	void shouldPostEventoDevuelveJson() throws Exception {
+	    
+    	ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+    	
+    	UsuarioResponse usuarioResponse = new UsuarioResponse();
+        usuarioResponse.setNombre("Juan");
+        usuarioResponse.setApellido("Perez");
+        usuarioResponse.setEmail("email@ejemplo.com");  // email MAL
+        usuarioResponse.setFecha_alta(LocalDate.of(2024, 12, 15));
+    	
+	    // String usuarioJson = "{\"nombre\": \"Usuario\", \"apellido\": \"Apellido\", \"email\": \"mail@ejemplo.com\", \"fecha_alta\": \"2024-12-11\"}";
 
+	    mockMvc.perform(post("/usuarios")
+	            .contentType(MediaType.APPLICATION_JSON)  
+	            .content(objectMapper.writeValueAsString(usuarioResponse))) 
+	            .andDo(print())  
+	            .andExpect(status().isCreated())  
+	            .andExpect(content().contentType(MediaType.APPLICATION_JSON)); 
+	}
+    
     @Test
     public void testUsuarioFormatoNoValido() throws Exception {
 
