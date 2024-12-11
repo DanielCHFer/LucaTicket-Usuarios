@@ -3,9 +3,12 @@ package com.ejemplos.spring.adapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.ejemplos.spring.model.Usuario;
 import com.ejemplos.spring.response.UsuarioResponse;
 
+@Component
 public class UsuariosAdapter {
 
 	public UsuarioResponse of(Usuario usuario) {
