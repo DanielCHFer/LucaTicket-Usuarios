@@ -19,19 +19,19 @@ public class Usuario {
 	private String apellido;
 	private String email;
 	private Date fecha_alta;
-	
-	public Usuario( ) {
+
+	public Usuario() {
 		super();
 	}
-	
-	public Usuario( String nombre, String apellido, String email, Date fecha_alta) {
+
+	public Usuario(String nombre, String apellido, String email, Date fecha_alta) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.email = email;
 		this.fecha_alta = fecha_alta;
 	}
-	
+
 	public Usuario(Long id_usuario, String nombre, String apellido, String email, Date fecha_alta) {
 		super();
 		this.id_usuario = id_usuario;
@@ -40,34 +40,43 @@ public class Usuario {
 		this.email = email;
 		this.fecha_alta = fecha_alta;
 	}
-	
+
 	public Long getId_usuario() {
 		return id_usuario;
 	}
+
 	public void setId_usuario(Long id_usuario) {
 		this.id_usuario = id_usuario;
 	}
+
 	public String getNombre() {
 		return nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
 	public String getApellido() {
 		return apellido;
 	}
+
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public Date getFecha_alta() {
 		return fecha_alta;
 	}
+
 	public void setFecha_alta(Date fecha_alta) {
 		this.fecha_alta = fecha_alta;
 	}
