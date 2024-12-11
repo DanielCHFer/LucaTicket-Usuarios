@@ -28,6 +28,11 @@ public class UsuarioController {
 	
 	@PostMapping
     public ResponseEntity<Usuario> crearUsuario(@Valid @RequestBody UsuarioResponse usuarioResponse) {
+		
+		if (usuarioResponse.getId_usuario() != null) {
+			usuarioResponse.setId_usuario(null);
+		}
+		
 		Usuario usuario = usuarioService.saveUsuario(usuarioAdapter.of(usuarioResponse)).get();
         return ResponseEntity.ok(usuario);
     }
