@@ -16,6 +16,7 @@ public class UsuarioAdapterTest {
 	@Test
 	void shouldNombreEventoResponseIgualANombreEvento() {
 		
+		//en usuario adapter hago la conversion de usuario a usuarioResponse y compruebo que lo que me devuelve esta correcto
 		UsuariosAdapter adapter = new UsuariosAdapter();
 		
 		Usuario usuario = new Usuario();
@@ -33,6 +34,8 @@ public class UsuarioAdapterTest {
 	
 	@Test
 	void shouldNombreEventoIgualANombreEventoResponse() {
+		
+		//en usuario adapter hago la conversion de usuarioResponse a usuario y compruebo que lo que me devuelve esta correcto
 		
 		UsuariosAdapter adapter = new UsuariosAdapter();
 		

@@ -1,7 +1,5 @@
 package com.ejemplos.spring.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +26,12 @@ public class UsuarioController {
 	
 	@PostMapping
     public ResponseEntity<Usuario> crearUsuario(@Valid @RequestBody UsuarioResponse usuarioResponse) {
-		Usuario usuario = usuarioService.saveUsuario(usuarioAdapter.of(usuarioResponse)).get();
-        return ResponseEntity.ok(usuario);
+		
+			if (usuarioResponse.getId_usuario() != null) {
+				usuarioResponse.setId_usuario(null);
+			}
+			
+			Usuario usuario = usuarioService.saveUsuario(usuarioAdapter.of(usuarioResponse)).get();
+	        return ResponseEntity.ok(usuario);
     }
 }
