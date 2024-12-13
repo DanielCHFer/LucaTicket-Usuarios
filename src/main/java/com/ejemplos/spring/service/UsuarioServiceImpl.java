@@ -17,6 +17,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public Optional<Usuario> saveUsuario(Usuario usuario){
 		return Optional.of(usuarioRepository.save(usuario));
 	}
+
+	@Override
+	public Optional<Usuario> findByEmail(String email) {
+
+		return  usuarioRepository.findByEmail(email);
+		
+	}
 	
 	
 }

@@ -7,5 +7,7 @@ import com.ejemplos.spring.model.Usuario;
 public interface UsuarioService {
 
 	public Optional<Usuario> saveUsuario(Usuario usuario);
+
+	public Optional<Usuario> findByEmail(String email);
 	
 }

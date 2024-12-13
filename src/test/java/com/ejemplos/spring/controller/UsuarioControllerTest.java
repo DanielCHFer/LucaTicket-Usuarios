@@ -1,5 +1,7 @@
 package com.ejemplos.spring.controller;
 
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -193,6 +195,19 @@ public class UsuarioControllerTest {
                 .andExpect(jsonPath("$.email").exists())
                 .andExpect(jsonPath("$.fecha_alta").exists());
     }
+    
+    
+	@Test
+	void shouldGetEventoDevuelveJson() throws Exception {
+        Usuario usuario = new Usuario(1L, "Adrian", "Gomez", "adriangomezc12@gmail.com", LocalDate.of(2024, 12, 12));
+        Optional<Usuario> res = Optional.of(usuario);
+        when(usuarioService.findByEmail("adriangomezc12@gmail.com")).thenReturn(res);
+
+        mockMvc.perform(get("/usuarios/adriangomezc12@gmailcom"))
+		   .andDo(print())
+		   .andExpect(status().isOk())
+		   .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+	}
     
     
 }
