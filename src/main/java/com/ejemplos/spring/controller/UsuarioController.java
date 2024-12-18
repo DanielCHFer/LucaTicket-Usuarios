@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ejemplos.spring.adapter.UsuariosAdapter;
 import com.ejemplos.spring.model.Usuario;
+import com.ejemplos.spring.repository.UsuarioRepository;
 import com.ejemplos.spring.response.UsuarioResponse;
 import com.ejemplos.spring.service.UsuarioService;
 
@@ -33,6 +34,9 @@ public class UsuarioController {
 
 	@Autowired
 	UsuariosAdapter usuarioAdapter;
+	
+	@Autowired
+	UsuarioRepository usuarioRepository;
 
 	/**
 	 * Crear endpoint @GetMapping(“/{email}”) findByEmail (@PathVariable String
@@ -70,6 +74,21 @@ public class UsuarioController {
 		if (usuarioResponse.getId_usuario() != null) {
 			usuarioResponse.setId_usuario(null);
 		}
+		
+		Optional<Usuario> usuarioRepetido = usuarioRepository.findByEmail(usuarioResponse.getEmail());
+		
+		if (usuarioRepetido.isPresent()) {
+			Map<String, Object> response = new HashMap<>();
+			response.put("timestamp", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+			response.put("timestamp", System.currentTimeMillis());
+			response.put("status", HttpStatus.BAD_REQUEST);
+			response.put("message",
+					"El mail del usuario debe ser único.");
+			response.put("input", usuarioResponse);
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
+		
+		
 		// Se guarda el Usuario covertido a Entidad
 		Optional<Usuario> result =  usuarioService.saveUsuario(usuarioAdapter.of(usuarioResponse));
 		
