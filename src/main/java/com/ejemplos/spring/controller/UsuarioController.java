@@ -39,13 +39,15 @@ public class UsuarioController {
 	UsuarioRepository usuarioRepository;
 
 	/**
-	 * Crear endpoint @GetMapping(“/{email}”) findByEmail (@PathVariable String
-	 * email) devuelve ResponseEntity<UsuarioResponse>.
-	 * 
-	 * @param usuarioResponse
-	 * @return
-	 */
-	@Operation(summary = "Obtener usuario dado su email")
+     * Buscar un usuario por correo electrónico.
+     * 
+     * @param email Correo electrónico del usuario que se desea buscar.
+     * @return ResponseEntity con el usuario encontrado, o un mensaje de error si no se encuentra en la base de datos.
+     */
+    @Operation(
+        summary = "Buscar un usuario por correo", 
+        description = "Permite encontrar un usuario específico en la base de datos utilizando su dirección de correo electrónico."
+    )
 	@GetMapping("/{email}")
 	public ResponseEntity<?> findByEmail(@PathVariable String email) {
 
@@ -66,7 +68,17 @@ public class UsuarioController {
 
 	}
 
-	@Operation(summary = "Dar de alta un nuevo usuario", description = "Permite crear un nuevo usuario en la base de datos. Ignora el Id_usuario si se especifica en el Json de entrada.")
+    /**
+     * Crear un nuevo usuario en la base de datos.
+     * 
+     * @param usuarioResponse Objeto con los datos del usuario que se desea crear. 
+     *                        El Id_usuario será ignorado si se especifica en la entrada JSON.
+     * @return ResponseEntity con el usuario creado, o un mensaje de error si el correo ya existe o no se puede guardar.
+     */
+    @Operation(
+        summary = "Dar de alta un nuevo usuario", 
+        description = "Permite crear un nuevo usuario en la base de datos. Ignora el Id_usuario si se especifica en el Json de entrada."
+    )
 	@PostMapping()
 	public ResponseEntity<?> crearUsuario(@Valid @RequestBody UsuarioResponse usuarioResponse) {
 

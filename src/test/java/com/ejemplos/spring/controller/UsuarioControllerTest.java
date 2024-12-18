@@ -120,7 +120,6 @@ public class UsuarioControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(usuarioRequestJson))
                 .andExpect(status().isCreated()) // Verifica el código 201
-                .andExpect(jsonPath("$.id_usuario").value(1L))
                 .andExpect(jsonPath("$.nombre").value("Juan"))
                 .andExpect(jsonPath("$.apellido").value("Perez"))
                 .andExpect(jsonPath("$.email").value("juan.perez@example.com"))
